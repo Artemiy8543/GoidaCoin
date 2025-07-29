@@ -1,0 +1,1 @@
+Repository to store data for my GoidaCoin game
