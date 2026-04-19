@@ -6,7 +6,6 @@ const OUTPUT_FILE = path.join(__dirname, '..', 'index.json');
 
 function generateIndex() {
   const posts = [];
-
   const folders = fs.readdirSync(POSTS_DIR).filter(item => {
     const itemPath = path.join(POSTS_DIR, item);
     return fs.statSync(itemPath).isDirectory() && !item.startsWith('.');
@@ -20,9 +19,12 @@ function generateIndex() {
     if (fs.existsSync(dataJsonPath)) {
       try {
         const rawData = fs.readFileSync(dataJsonPath, 'utf8');
+        const postData = JSON.parse(rawData);
+        const encodedFolder = encodeURIComponent(folder);
+
         posts.push({
-          date: folder,
-          data: postData,
+          data: folder,
+          url: `https://raw.githubusercontent.com/${process.env.GITHUB_REPOSITORY}/main/Posts/${encodedFolder}/data.json`,
         });
       } catch (error) {
         console.error(`Ошибка при чтении ${dataJsonPath}:`, error);
