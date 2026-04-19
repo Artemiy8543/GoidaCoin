@@ -24,7 +24,7 @@ function generateIndex() {
 
         posts.push({
           data: folder,
-          url: `https://raw.githubusercontent.com/${process.env.GITHUB_REPOSITORY}/main/Posts/${encodedFolder}/data.json`,
+          raw_url: `https://raw.githubusercontent.com/${process.env.GITHUB_REPOSITORY}/main/Posts/${encodedFolder}/data.json`,
         });
       } catch (error) {
         console.error(`Ошибка при чтении ${dataJsonPath}:`, error);
