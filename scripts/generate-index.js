@@ -23,9 +23,8 @@ function generateIndex() {
         const encodedFolder = encodeURIComponent(folder);
 
         posts.push({
-          slug: folder,
-          raw_url: `https://raw.githubusercontent.com/${process.env.GITHUB_REPOSITORY}/main/Posts/${encodedFolder}/data.json`,
-          date: postData.date || folder,
+          data: folder,
+          url: `https://raw.githubusercontent.com/${process.env.GITHUB_REPOSITORY}/main/Posts/${encodedFolder}/data.json`,
         });
       } catch (error) {
         console.error(`Ошибка при чтении ${dataJsonPath}:`, error);
