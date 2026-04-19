@@ -20,7 +20,6 @@ function generateIndex() {
     if (fs.existsSync(dataJsonPath)) {
       try {
         const rawData = fs.readFileSync(dataJsonPath, 'utf8');
-        const postData = JSON.parse(rawData);
         posts.push({
           date: folder,
           data: postData,
