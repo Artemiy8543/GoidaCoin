@@ -1,0 +1,33 @@
+name: Generate and Commit index.json
+
+on:
+  push:
+    branches: [ "main" ]
+    paths:
+      - 'Posts/**'
+      - '.github/workflows/generate-index.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Setting Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Generate index.json
+        run: node scripts/generate-index.js
+
+      - name: Commit and push
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: 'Automatic update index.json'
+          file_pattern: 'index.json'
