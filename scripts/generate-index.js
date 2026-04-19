@@ -25,8 +25,6 @@ function generateIndex() {
         posts.push({
           slug: folder,
           raw_url: `https://raw.githubusercontent.com/${process.env.GITHUB_REPOSITORY}/main/Posts/${encodedFolder}/data.json`,
-          title: postData.title || 'Без названия',
-          excerpt: postData.excerpt || '',
           date: postData.date || folder,
         });
       } catch (error) {
