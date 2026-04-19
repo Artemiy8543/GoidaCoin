@@ -2,7 +2,7 @@ name: Generate and Commit index.json
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "master" ]
     paths:
       - 'Posts/**'
       - '.github/workflows/generate-index.yml'
