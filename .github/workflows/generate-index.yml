@@ -15,19 +15,29 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repo
+      - name: Checkout репозитория
         uses: actions/checkout@v4
+        with:
+          ref: master
+          fetch-depth: 0
 
-      - name: Setting Node.js
+      - name: Синхронизация с удалённой веткой
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git pull --rebase origin master
+
+      - name: Настройка Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
 
-      - name: Generate index.json
+      - name: Генерация index.json
         run: node scripts/generate-index.js
 
-      - name: Commit and push
+      - name: Коммит и пуш изменений
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: 'Automatic update index.json'
           file_pattern: 'index.json'
+          push_options: '--force-with-lease'
