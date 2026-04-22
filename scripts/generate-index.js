@@ -31,12 +31,8 @@ function generateIndex() {
         return fs.statSync(itemPath).isFile() && item !== 'data.json';
       });
 
-      const encodedFolder = encodeURIComponent(folder);
-      const rawUrl = `https://raw.githubusercontent.com/${process.env.GITHUB_REPOSITORY}/master/Posts/${encodedFolder}/data.json`;
-
       posts.push({
         date: folder,
-        raw_url: rawUrl,
         files: allFiles,
         //data: postData
       });
