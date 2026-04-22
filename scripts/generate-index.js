@@ -6,6 +6,7 @@ const OUTPUT_FILE = path.join(__dirname, '..', 'index.json');
 
 function generateIndex() {
   const posts = [];
+
   const folders = fs.readdirSync(POSTS_DIR).filter(item => {
     const itemPath = path.join(POSTS_DIR, item);
     return fs.statSync(itemPath).isDirectory() && !item.startsWith('.');
@@ -14,23 +15,34 @@ function generateIndex() {
   folders.sort((a, b) => b.localeCompare(a));
 
   for (const folder of folders) {
-    const dataJsonPath = path.join(POSTS_DIR, folder, 'data.json');
+    const folderPath = path.join(POSTS_DIR, folder);
+    const dataJsonPath = path.join(folderPath, 'data.json');
 
-    if (fs.existsSync(dataJsonPath)) {
-      try {
-        const rawData = fs.readFileSync(dataJsonPath, 'utf8');
-        const postData = JSON.parse(rawData);
-        const encodedFolder = encodeURIComponent(folder);
-
-        posts.push({
-          data: folder,
-          raw_url: `https://raw.githubusercontent.com/${process.env.GITHUB_REPOSITORY}/main/Posts/${encodedFolder}/data.json`,
-        });
-      } catch (error) {
-        console.error(`Ошибка при чтении ${dataJsonPath}:`, error);
-      }
-    } else {
+    if (!fs.existsSync(dataJsonPath)) {
       console.warn(`Файл data.json не найден в папке ${folder}`);
+      continue;
+    }
+
+    try {
+      const rawData = fs.readFileSync(dataJsonPath, 'utf8');
+      const postData = JSON.parse(rawData);
+      const allFiles = fs.readdirSync(folderPath).filter(item => {
+        const itemPath = path.join(folderPath, item);
+        return fs.statSync(itemPath).isFile() && item !== 'data.json';
+      });
+
+      const encodedFolder = encodeURIComponent(folder);
+      const rawUrl = `https://raw.githubusercontent.com/${process.env.GITHUB_REPOSITORY}/master/Posts/${encodedFolder}/data.json`;
+
+      posts.push({
+        date: folder,
+        raw_url: rawUrl,
+        files: allFiles,
+        data: postData
+      });
+
+    } catch (error) {
+      console.error(`Ошибка при обработке папки ${folder}:`, error);
     }
   }
 
