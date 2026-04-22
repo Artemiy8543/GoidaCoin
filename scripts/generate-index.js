@@ -38,7 +38,7 @@ function generateIndex() {
         date: folder,
         raw_url: rawUrl,
         files: allFiles,
-        data: postData
+        //data: postData
       });
 
     } catch (error) {
